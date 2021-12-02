@@ -54,11 +54,14 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   cmake_modules
+  rotors_control
 )
 
 find_package(
   Eigen3 REQUIRED
 )
+
+find_package(nlohmann_json 3.2.0 REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS include ${Eigen3_INCLUDE_DIRS}
@@ -80,6 +83,10 @@ add_library(spline_trajectory_generator
 add_executable(waypoint_publisher src/nodes/waypoint_publisher.cpp)
 target_link_libraries(waypoint_publisher ${catkin_LIBRARIES})
 add_dependencies(waypoint_publisher ${catkin_EXPORTED_TARGETS})
+
+add_executable(tracking_spline src/nodes/tracking_spline.cpp)
+target_link_libraries(tracking_spline ${catkin_LIBRARIES} nlohmann_json::nlohmann_json)
+add_dependencies(tracking_spline ${catkin_EXPORTED_TARGETS})
 
 add_executable(waypoint_publisher_file src/nodes/waypoint_publisher_file.cpp)
 target_link_libraries(waypoint_publisher_file ${catkin_LIBRARIES})
